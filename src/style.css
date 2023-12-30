@@ -5,6 +5,17 @@
   --red: #ff7070;
   --light-green: #9fff9c;
   --light-red: #ff9c9c;
+
+  --listColour: #faebd7;
+
+  --fruit: #095e1b;
+  --meat: #db3838;
+  --deli: #f0c91d;
+  --aisles: #3ebcc0;
+  --dairy: #4851c9;
+  --baby: #c948c2;
+  --freezer: #00098b;
+ 
   --border-radius: 8px;
   --spacing-xs: 5px;
   --spacing-sm: 10px;
@@ -56,6 +67,10 @@ input {
 input[type='text'],
 input[type='number'] {
   cursor: text;
+}
+
+input[type='submit'] {
+  display: none;
 }
 
 /* UTILS */
@@ -114,7 +129,6 @@ input[type='number'] {
 }
 
 /* MAIN */
-
 main {
   margin-top: var(--spacing-lg);
   text-align: center;
@@ -122,6 +136,73 @@ main {
 
 .shopping-list {
   display: flex;
+  flex-direction: column;
+  background-color: var(--listColour);
+  border: none;
+}
+
+.item {
+  display: flex;
+  /* border-color: #00098b; */
+  border-bottom: solid #00098b;
+  /* border-bottom: #00098b; */
+  border-width: 1px;
+  /* border: none #00098b #095e1b #3ebcc0; */
+}
+
+.item p {
+  align-self: center;
+  padding: 3px;
+}
+
+.item-name {
+  flex: 4;
+  font-family: cursive;
+  text-transform: capitalize;
+  text-align: left;
+  padding-left: 20px;
+}
+
+.item-category {
+  flex: 1;
+  border-radius: 12px;
+  text-transform: lowercase;
+  font-size:  16px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  margin-right: 20px;
+}
+
+.cat-fruit {
+  background-color: var(--fruit);
+}
+
+.cat-meat {
+  background-color: var(--meat);
+}
+
+.cat-deli {
+  background-color: var(--deli);
+}
+
+.cat-aisles {
+  background-color: var(--aisles);
+}
+
+.cat-dairy {
+  background-color: var(--dairy);
+}
+
+.cat-baby {
+  background-color: var(--baby);
+}
+
+.cat-freezer {
+  background-color: var(--freezer);
+}
+
+.item-amount {
+  flex: 1;
 }
 
 
@@ -145,10 +226,35 @@ main {
   transform: translate(-50%, -50%) scale(1);
 }
 
-.input {
+form {
+  display: flex;
+  background-color: var(--listColour);
+  /* flex:1 0 0; */
+  /* width: 50px; */
+}
+
+input {
   width: 100%;
   padding: 10px;
   border-radius: var(--border-radius);
+  display:inline-block;
+  background-color: var(--listColour);
+  font-size: 16px;
+}
+
+.input-name {
+  flex: 4;
+  font-family: cursive;
+}
+
+.input-amount {
+  flex: 1;
+}
+
+.input-category {
+  flex: 1;
+  margin-right: 20px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .checkbox {

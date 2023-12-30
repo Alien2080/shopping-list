@@ -25,11 +25,20 @@
             </nav>
         </div>
     </header>
-    <main class="main container">       
-        <div class="shopping-list" id="shoppingList"></div>
+    <main class="main container">
+        <div class="shopping-list" id="shoppingList">
+            <form id="inputForm">
+                <input type="text" class="input-name" id="inputName" placeholder="Add Item?">
+                <input type="text" class="input-amount" id="inputAmount" placeholder="1">
+                <input type="text" class="input-category" id="inputCategory" placeholder="aisles">
+                <input type="submit" hidden="true"/>
+            </form>
+
+        </div>
+
     </main>
 
-    
+
     <div class="modal" id="accountModal"></div>
     <div class="overlay" id="overlay"></div>
 
@@ -39,16 +48,16 @@
     <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
     <script>
         const firebaseConfig = {
-          apiKey: "AIzaSyD2DZea1kPjbto15jU8aHhUvn_oJs0vUWk",
-          authDomain: "shopping-list-alien2080.firebaseapp.com",
-          projectId: "shopping-list-alien2080",
-          storageBucket: "shopping-list-alien2080.appspot.com",
-          messagingSenderId: "1045100191067",
-          appId: "1:1045100191067:web:8c75b3139acda8ba088e7e"
+            apiKey: "AIzaSyD2DZea1kPjbto15jU8aHhUvn_oJs0vUWk",
+            authDomain: "shopping-list-alien2080.firebaseapp.com",
+            projectId: "shopping-list-alien2080",
+            storageBucket: "shopping-list-alien2080.appspot.com",
+            messagingSenderId: "1045100191067",
+            appId: "1:1045100191067:web:8c75b3139acda8ba088e7e"
         };
 
         firebase.initializeApp(firebaseConfig);
-      </script>
+    </script>
 </body>
 
 </html>
