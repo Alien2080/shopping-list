@@ -32,9 +32,21 @@ class ShoppingList {
 
     sortByCategory() {
         const sortOrder = ['fruit', 'meat', 'deli', 'aisles', 'dairy', 'baby', 'freezer']
-        this.items.sort((a, b) => { return sortOrder.indexOf(a.category) - sortOrder.indexOf(b.category) })
+        this.items.sort((a, b) => { 
+            if (sortOrder.indexOf(a.category) === sortOrder.indexOf(b.category)) {
+                if ( a.name < b.name ){
+                    return -1;
+                  }
+                  if ( a.name > b.name ){
+                    return 1;
+                  }
+                  return 0;
+            }
+            else {
+                return sortOrder.indexOf(a.category) - sortOrder.indexOf(b.category) 
+            }
+        })           
     }
-
 }
 
 // UI
@@ -94,7 +106,6 @@ function updateShoppingList() {
 }
 
 function addItem() {
-    // e.preventDefault()
     const item = new Item('test', 2, 'deli');
 
     list.addItem(item)
@@ -142,7 +153,6 @@ function createFormHtml() {
 }
 
 
-
 function setupNavbar(user) {
     if (user) {
         loggedIn.classList.add('active')
@@ -170,8 +180,6 @@ function handleKeyboardInput(e) {
 
 // FireStore.
 // Auth
-
-
 function signIn() {
     const provider = new firebase.auth.GoogleAuthProvider()
     auth.signInWithPopup(provider)
@@ -208,12 +216,11 @@ let unsubscribe
 const list = new ShoppingList()
 
 const shoppingListDiv = document.getElementById('shoppingList')
-// let inputForm = document.getElementById('inputForm')
 
 
 // Events.
 window.onkeydown = handleKeyboardInput
-// inputForm.onsubmit = addItem
+
 
 // restoreLocal()
 // getBooksFromDB()
@@ -238,5 +245,6 @@ list.addItem(new Item('chicken breast', 99, 'meat'))
 list.addItem(new Item('ice cream', 99, 'freezer'))
 list.addItem(new Item('rice', 99, 'aisles'))
 list.addItem(new Item('apples', 99, 'fruit'))
+list.addItem(new Item('apple milk', 99, 'dairy'))
 
 updateShoppingList()
