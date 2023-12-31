@@ -102,17 +102,46 @@ function addItem() {
 }
 
 function resetShoppingList() {
-    shoppingListDiv.innerHTML =
-    `<form id="inputForm">
-    <input type="text" class="input-name" id="inputName" placeholder="Add Item?">
-    <input type="text" class="input-amount" id="inputAmount" placeholder="1">
-    <input type="text" class="input-category" id="inputCategory" placeholder="aisles">
-    <input type="submit" hidden="true"/>
-</form>`
-
-    inputForm = document.getElementById('inputForm')
-    inputForm.onsubmit = addItem
+    shoppingListDiv.innerHTML = ''
+    shoppingListDiv.appendChild(createFormHtml())
 }
+
+function createFormHtml() {
+    const form = document.createElement('form')
+    const name = document.createElement('input')
+    const amount = document.createElement('input')
+    const category = document.createElement('input')
+    const submit = document.createElement('input') 
+
+    form.id = 'inputForm'
+
+    name.id = 'inputName'
+    name.type = 'text'
+    name.classList.add('input-name')
+    name.placeholder = 'Add Item?'
+
+    amount.id = 'inputAmount'
+    amount.type = 'text'
+    amount.classList.add('input-amount')
+    amount.placeholder = '1'
+
+    category.id = 'inputCategory'
+    category.type = 'text'
+    category.classList.add('input-category')
+    category.placeholder = 'aisles'
+
+    submit.type = 'submit'
+    submit.hidden = true
+
+    form.appendChild(name)
+    form.appendChild(amount)
+    form.appendChild(category)
+    form.appendChild(submit)
+
+    return form
+}
+
+
 
 function setupNavbar(user) {
     if (user) {
@@ -179,12 +208,12 @@ let unsubscribe
 const list = new ShoppingList()
 
 const shoppingListDiv = document.getElementById('shoppingList')
-let inputForm = document.getElementById('inputForm')
+// let inputForm = document.getElementById('inputForm')
 
 
 // Events.
 window.onkeydown = handleKeyboardInput
-inputForm.onsubmit = addItem
+// inputForm.onsubmit = addItem
 
 // restoreLocal()
 // getBooksFromDB()
