@@ -31,7 +31,7 @@ class ShoppingList {
     }
 
     sortByCategory() {
-        const sortOrder = ['fruit', 'meat', 'deli', 'aisles', 'dairy', 'baby', 'freezer']
+        const sortOrder = ['fruit', 'deli', 'meat','dairy', 'aisles', 'baby', 'freezer']
         this.items.sort((a, b) => {
             if (sortOrder.indexOf(a.category) === sortOrder.indexOf(b.category)) {
                 if (a.name < b.name) {

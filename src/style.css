@@ -14,7 +14,7 @@
 
   --listColour: #B7B7AF;
   --lineColour: #526D82;
-  --penColour: #315169;
+  --penColour: #233a4b;
 
   --fruit: #095e1b;
   --meat: #db3838;
@@ -144,6 +144,8 @@ main {
 
 .shopping-list {
   display: flex;
+  width: min(100%, 500px);
+  min-width: 212px;
   flex-direction: column;
   background-color: var(--listColour);
   border: none;
@@ -162,15 +164,21 @@ main {
 .item p {
   align-self: center;
   padding: 3px;
-  color: var(--penColour);
 }
 
 .item-name {
   flex: 4;
   font-family: Comic-Jens;
+  color: var(--penColour);
   text-transform: capitalize;
   text-align: left;
   margin-left: 20px;
+}
+
+.item-amount {
+  flex: 1;
+  font-family: Comic-Jens;
+  color: var(--penColour);
 }
 
 .item-category {
@@ -193,10 +201,12 @@ main {
 
 .cat-deli {
   background-color: var(--deli);
+  color: var(--black);
 }
 
 .cat-aisles {
   background-color: var(--aisles);
+  color: var(--black);
 }
 
 .cat-dairy {
@@ -205,14 +215,11 @@ main {
 
 .cat-baby {
   background-color: var(--baby);
+  color: var(--black);
 }
 
 .cat-freezer {
   background-color: var(--freezer);
-}
-
-.item-amount {
-  flex: 1;
 }
 
 
