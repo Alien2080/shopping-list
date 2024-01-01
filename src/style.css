@@ -149,6 +149,10 @@ main {
   border: none;
 }
 
+.strikthrough {
+  text-decoration: line-through;
+}
+
 .item {
   display: flex;
   border-bottom: solid var(--lineColour);

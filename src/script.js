@@ -95,6 +95,10 @@ function createItem(item) {
     itemDiv.appendChild(itemAmount)
     itemDiv.appendChild(itemCategory)
     shoppingListDiv.insertBefore(itemDiv, document.getElementById('inputForm'))
+
+    itemDiv.addEventListener("click", () => {
+        itemDiv.classList.toggle('strikthrough')
+    })
 }
 
 function updateShoppingList() {
