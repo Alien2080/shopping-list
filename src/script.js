@@ -1,9 +1,24 @@
 class Item {
-    constructor(name, amount, category, enteredBy = auth.user ? email : '') {
-        this.name = name,
-            this.category = category,
-            this.amount = amount,
-            this.enteredBy = enteredBy
+    constructor(
+        name,
+        amount = '1',
+        category = 'aisles',
+        enteredBy = auth.user ? email : ''
+    ) {
+        this.name = name
+        if (amount) {
+            this.amount = amount
+        }
+        else {
+            this.amount = '1'
+        }
+        if (category) {
+            this.category = category
+        }
+        else {
+            this.category = 'aisles'
+        }
+        this.enteredBy = enteredBy
     }
 }
 
@@ -31,7 +46,7 @@ class ShoppingList {
     }
 
     sortByCategory() {
-        const sortOrder = ['fruit', 'deli', 'meat','dairy', 'aisles', 'baby', 'freezer']
+        const sortOrder = ['fruit', 'deli', 'meat', 'dairy', 'aisles', 'baby', 'freezer']
         this.items.sort((a, b) => {
             if (sortOrder.indexOf(a.category) === sortOrder.indexOf(b.category)) {
                 if (a.name < b.name) {
@@ -55,6 +70,13 @@ function createItem(item) {
     const itemName = document.createElement('p')
     const itemAmount = document.createElement('p')
     const itemCategory = document.createElement('p')
+
+    const deleteIcon = document.createElement('span')
+    deleteIcon.classList.add('material-icons')
+    deleteIcon.textContent = 'delete'
+    deleteIcon.addEventListener('click', () => {
+        itemDiv.remove()
+    })
 
     itemDiv.classList.add('item')
     itemName.classList.add('item-name')
@@ -96,6 +118,7 @@ function createItem(item) {
     itemDiv.appendChild(itemName)
     itemDiv.appendChild(itemAmount)
     itemDiv.appendChild(itemCategory)
+    itemDiv.appendChild(deleteIcon)
     shoppingListDiv.insertBefore(itemDiv, document.getElementById('inputForm'))
 }
 
@@ -108,9 +131,10 @@ function updateShoppingList() {
 }
 
 function addItem() {
-    const item = new Item('test', 2, 'deli');
-
-    list.addItem(item)
+    const name = document.getElementById('inputName')
+    const amount = document.getElementById('inputAmount')
+    const category = document.getElementById('inputCategory')
+    list.addItem(new Item(name.value, amount.value, category.value))
     updateShoppingList()
 }
 

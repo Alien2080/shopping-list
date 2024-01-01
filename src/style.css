@@ -159,6 +159,7 @@ main {
   display: flex;
   border-bottom: solid var(--lineColour);
   border-width: 1px;
+  cursor: pointer;
 }
 
 .item p {
