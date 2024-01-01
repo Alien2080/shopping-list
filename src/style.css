@@ -23,7 +23,7 @@
   --dairy: #4851c9;
   --baby: #c948c2;
   --freezer: #00098b;
- 
+
   --border-radius: 8px;
   --spacing-xs: 5px;
   --spacing-sm: 10px;
@@ -177,7 +177,7 @@ main {
   flex: 1;
   border-radius: 12px;
   text-transform: lowercase;
-  font-size:  16px;
+  font-size: 16px;
   font-family: Arial, Helvetica, sans-serif;
   color: white;
   margin-right: 20px;
@@ -239,15 +239,13 @@ main {
 form {
   display: flex;
   background-color: var(--listColour);
-  /* flex:1 0 0; */
-  /* width: 50px; */
 }
 
 input {
   width: 100%;
   padding: 10px;
   border-radius: var(--border-radius);
-  display:inline-block;
+  display: inline-block;
   background-color: var(--listColour);
   font-size: 16px;
 }
@@ -316,6 +314,7 @@ input {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }

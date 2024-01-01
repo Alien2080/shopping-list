@@ -32,20 +32,20 @@ class ShoppingList {
 
     sortByCategory() {
         const sortOrder = ['fruit', 'meat', 'deli', 'aisles', 'dairy', 'baby', 'freezer']
-        this.items.sort((a, b) => { 
+        this.items.sort((a, b) => {
             if (sortOrder.indexOf(a.category) === sortOrder.indexOf(b.category)) {
-                if ( a.name < b.name ){
+                if (a.name < b.name) {
                     return -1;
-                  }
-                  if ( a.name > b.name ){
+                }
+                if (a.name > b.name) {
                     return 1;
-                  }
-                  return 0;
+                }
+                return 0;
             }
             else {
-                return sortOrder.indexOf(a.category) - sortOrder.indexOf(b.category) 
+                return sortOrder.indexOf(a.category) - sortOrder.indexOf(b.category)
             }
-        })           
+        })
     }
 }
 
@@ -84,21 +84,19 @@ function createItem(item) {
         case 'baby':
             itemCategory.classList.add('cat-baby')
             break
-
         case 'freezer':
             itemCategory.classList.add('cat-freezer')
             break
-
     }
+
+    itemDiv.addEventListener("click", () => {
+        itemDiv.classList.toggle('strikthrough')
+    })
 
     itemDiv.appendChild(itemName)
     itemDiv.appendChild(itemAmount)
     itemDiv.appendChild(itemCategory)
     shoppingListDiv.insertBefore(itemDiv, document.getElementById('inputForm'))
-
-    itemDiv.addEventListener("click", () => {
-        itemDiv.classList.toggle('strikthrough')
-    })
 }
 
 function updateShoppingList() {
@@ -126,7 +124,7 @@ function createFormHtml() {
     const name = document.createElement('input')
     const amount = document.createElement('input')
     const category = document.createElement('input')
-    const submit = document.createElement('input') 
+    const submit = document.createElement('input')
 
     form.id = 'inputForm'
 
