@@ -76,6 +76,7 @@ function createItem(item) {
     deleteIcon.textContent = 'delete'
     deleteIcon.addEventListener('click', () => {
         itemDiv.remove()
+        list.removeItem(itemName.textContent)
     })
 
     itemDiv.classList.add('item')
