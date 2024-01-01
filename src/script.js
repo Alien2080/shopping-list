@@ -144,6 +144,11 @@ function resetShoppingList() {
     shoppingListDiv.appendChild(createFormHtml())
 }
 
+function clearList() {
+    list = new ShoppingList()
+    updateShoppingList()
+}
+
 function createFormHtml() {
     const form = document.createElement('form')
     const name = document.createElement('input')
@@ -240,7 +245,7 @@ const auth = firebase.auth()
 const db = firebase.firestore()
 let unsubscribe
 
-const list = new ShoppingList()
+let list = new ShoppingList()
 
 const shoppingListDiv = document.getElementById('shoppingList')
 
