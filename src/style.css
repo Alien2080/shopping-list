@@ -169,7 +169,7 @@ main {
 
 .item-name {
   flex: 4;
-  font-family: Comic-Jens;
+  font-family: Comic-Jens, cursive;
   color: var(--penColour);
   text-transform: capitalize;
   text-align: left;
@@ -178,7 +178,7 @@ main {
 
 .item-amount {
   flex: 1;
-  font-family: Comic-Jens;
+  font-family: Comic-Jens, cursive;
   color: var(--penColour);
 }
 
