@@ -74,9 +74,11 @@ function createItem(item) {
     const deleteIcon = document.createElement('span')
     deleteIcon.classList.add('material-icons')
     deleteIcon.textContent = 'delete'
-    deleteIcon.addEventListener('click', () => {
+    deleteIcon.addEventListener('click', (e) => {
         itemDiv.remove()
         list.removeItem(itemName.textContent)
+        saveLocal()
+        removeItemFromDB(itemName.textContent)
     })
 
     itemDiv.classList.add('item')
@@ -135,7 +137,14 @@ function addItem() {
     const name = document.getElementById('inputName')
     const amount = document.getElementById('inputAmount')
     const category = document.getElementById('inputCategory')
-    list.addItem(new Item(name.value, amount.value, category.value))
+    const newItem = new Item(name.value, amount.value, category.value, auth.currentUser.uid)
+
+    if (list.isOnList(newItem)) {
+        throw "Item already on list"
+    }
+    list.addItem(newItem)
+    saveItemToDB(newItem)
+    saveLocal()
     updateShoppingList()
 }
 
@@ -146,6 +155,7 @@ function resetShoppingList() {
 
 function clearList() {
     list = new ShoppingList()
+    removeListFromDB()
     updateShoppingList()
 }
 
@@ -206,12 +216,96 @@ function setupAccountModal(user) {
     }
 }
 
+function openAccountModal() {
+    accountModal.classList.add('active')
+    overlay.classList.add('active')
+}
+
+function closeAccountModal() {
+    accountModal.classList.remove('active')
+    overlay.classList.remove('active')
+}
+
+function closeAllModals() {
+    closeAccountModal()
+}
+
 function handleKeyboardInput(e) {
     if (e.key === 'Enter') addItem()
 }
 
+// Local Storage functions.
+function saveLocal() {
+    localStorage.setItem('shopping-list', JSON.stringify(list.items))
+}
+
+function restoreLocal() {
+    const newList = JSON.parse(localStorage.getItem('shopping-list'))
+    if (newList) {
+        list.items = newList.map((item) => JSONToItem(item))
+    } else {
+        list.items = []
+    }
+    updateShoppingList()
+}
+
+
 // FireStore.
 // Auth
+function saveItemToDB(item) {
+    db.collection('shopping-list').add({
+        ownerID: auth.currentUser.uid,
+        name: item.name,
+        amount: item.amount,
+        category: item.category,
+        enteredBy: item.enteredBy,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    })
+}
+
+async function removeItemFromDB(name) {
+    db.collection('shopping-list').doc(await getItemIDFromName(name)).delete()
+    updateShoppingList()
+}
+
+async function removeListFromDB() {
+    let snapshot = await db.collection('shopping-list')
+        .where('ownerID', '==', auth.currentUser.uid)
+        .get()
+    snapshot.forEach((doc) => {
+        doc.ref.delete()    
+    })
+    updateShoppingList()
+}
+
+async function getItemIDFromName(name) {
+    const snapshot = await db
+        .collection('shopping-list')
+        .where('name', '==', name)
+        .where('ownerID', '==', auth.currentUser.uid)
+        .get()
+    if (snapshot.docs.length > 1) {
+        throw "more than 1 item with name in collection"
+    }
+    const itemID = snapshot.docs.map((doc) => doc.id).join('')
+    return itemID
+}
+
+async function getItemsFromDB() {
+    let snapshot = await db.collection('shopping-list').get()
+
+    list.items = snapshot.docs.map((doc) => new Item(
+        doc.data().name,
+        doc.data().amount,
+        doc.data().category,
+        doc.data().enteredBy
+    ))
+
+    updateShoppingList()
+}
+
+
+
 function signIn() {
     const provider = new firebase.auth.GoogleAuthProvider()
     auth.signInWithPopup(provider)
@@ -229,13 +323,19 @@ function setupRealTimeListener() {
         .onSnapshot((snapshot) => {
             list.items = snapshot.docs.map((doc) => new Item(
                 doc.data().name,
-                doc.data().category,
                 doc.data().amount,
+                doc.data().category,
                 doc.data().enteredBy
             ))
-            updateBookGrid()
+            updateShoppingList()
         })
 }
+
+// Helper functions.
+function JSONToItem(item) {
+    return new Item(item.name, item.amount, item.category, item.enteredBy)
+}
+
 
 // Main script.
 // Global variables.
@@ -248,14 +348,22 @@ let unsubscribe
 let list = new ShoppingList()
 
 const shoppingListDiv = document.getElementById('shoppingList')
-
+const logInBtn = document.getElementById('logInBtn')
+const logOutBtn = document.getElementById('logOutBtn')
+const accountBtn = document.getElementById('accountBtn')
+const accountModal = document.getElementById('accountModal')
+const overlay = document.getElementById('overlay')
+const loggedIn = document.getElementById('loggedIn')
+const loggedOut = document.getElementById('loggedOut')
+const loadingRing = document.getElementById('loadingRing')
 
 // Events.
+overlay.onclick = closeAllModals
+accountBtn.onclick = openAccountModal
 window.onkeydown = handleKeyboardInput
+logInBtn.onclick = signIn
+logOutBtn.onclick = signOut
 
-
-// restoreLocal()
-// getBooksFromDB()
 
 auth.onAuthStateChanged(async (user) => {
     if (user) {
@@ -267,16 +375,3 @@ auth.onAuthStateChanged(async (user) => {
     setupAccountModal(user)
     setupNavbar(user)
 })
-
-
-// testing
-list.addItem(new Item('milk', 200, 'dairy'))
-list.addItem(new Item('nappies', 5, 'baby'))
-list.addItem(new Item('ham', '200 grams', 'deli'))
-list.addItem(new Item('chicken breast', 99, 'meat'))
-list.addItem(new Item('ice cream', 99, 'freezer'))
-list.addItem(new Item('rice', 99, 'aisles'))
-list.addItem(new Item('apples', 99, 'fruit'))
-list.addItem(new Item('apple milk', 99, 'dairy'))
-
-updateShoppingList()
