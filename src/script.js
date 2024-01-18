@@ -163,8 +163,10 @@ function createFormHtml() {
     const form = document.createElement('form')
     const name = document.createElement('input')
     const amount = document.createElement('input')
-    const category = document.createElement('input')
+    const category = document.createElement('select')
     const submit = document.createElement('input')
+
+    
 
     form.id = 'inputForm'
 
@@ -179,9 +181,16 @@ function createFormHtml() {
     amount.placeholder = '1'
 
     category.id = 'inputCategory'
-    category.type = 'text'
     category.classList.add('input-category')
-    category.placeholder = 'aisles'
+    // Add options for the dropdown
+    const categoryOptions = ['fruit', 'meat', 'deli', 'aisles', 'dairy', 'baby', 'freezer'];
+    categoryOptions.forEach((option) => {
+        const categoryOption = document.createElement('option');
+        categoryOption.value = option;
+        categoryOption.textContent = option.charAt(0).toUpperCase() + option.slice(1);
+        category.appendChild(categoryOption);
+    });
+
 
     submit.type = 'submit'
     submit.hidden = true

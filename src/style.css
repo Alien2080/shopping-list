@@ -144,11 +144,15 @@ main {
 
 .shopping-list {
   display: flex;
-  width: min(100%, 500px);
-  min-width: 212px;
   flex-direction: column;
-  background-color: var(--listColour);
-  border: none;
+  width: 100%;
+  max-width: 500px;
+  background-color: var(--white);
+  border: 1px solid var(--listColour);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin: 0 auto;
 }
 
 .strikthrough {
@@ -157,28 +161,24 @@ main {
 
 .item {
   display: flex;
-  border-bottom: solid var(--lineColour);
-  border-width: 1px;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--listColour);
   cursor: pointer;
-}
-
-.item p {
-  align-self: center;
-  padding: 3px;
 }
 
 .item-name {
   flex: 4;
-  font-family: Comic-Jens, cursive;
+  font-family: 'Comic-Jens', cursive;
   color: var(--penColour);
   text-transform: capitalize;
+  margin-left: 10px;
   text-align: left;
-  margin-left: 20px;
 }
 
 .item-amount {
   flex: 1;
-  font-family: Comic-Jens, cursive;
+  font-family: 'Comic-Jens', cursive;
   color: var(--penColour);
 }
 
@@ -187,9 +187,10 @@ main {
   border-radius: 12px;
   text-transform: lowercase;
   font-size: 16px;
-  font-family: Arial, Helvetica, sans-serif;
-  color: white;
-  margin-right: 20px;
+  font-family: 'Arial', Helvetica, sans-serif;
+  color: var(--black);
+  margin-right: 10px;
+  text-align: center;
 }
 
 .cat-fruit {
@@ -225,7 +226,6 @@ main {
 
 
 /* MODALS */
-
 .modal {
   position: fixed;
   z-index: 1;
@@ -234,19 +234,20 @@ main {
   width: 300px;
   padding: var(--spacing-lg);
   border-radius: var(--border-radius);
-  background-color: var(--grey);
+  background-color: var(--white);
   text-align: center;
   transform: translate(-50%, -50%) scale(0);
   transition: 0.2s ease-in-out;
-}
-
-.modal.active {
-  transform: translate(-50%, -50%) scale(1);
+  box-shadow: var(--shadow);
 }
 
 form {
   display: flex;
-  background-color: var(--listColour);
+  flex-direction: row;
+}
+
+.modal.active {
+  transform: translate(-50%, -50%) scale(1);
 }
 
 input {
@@ -261,16 +262,20 @@ input {
 .input-name {
   flex: 4;
   font-family: cursive;
+  margin-left: 10px;
 }
 
 .input-amount {
   flex: 1;
+  text-align: center;
 }
 
 .input-category {
   flex: 1;
-  margin-right: 20px;
-  font-family: Arial, Helvetica, sans-serif;
+  margin-right: 10px;
+  font-family: 'Arial', Helvetica, sans-serif;
+  padding: 10px;
+  font-size: 16px;
 }
 
 .checkbox {
@@ -295,11 +300,9 @@ input {
 }
 
 /* LOADING RING */
-
 .lds-dual-ring {
   display: none;
-  width: 38px;
-  height: 38px;
+  margin: 20px auto;
 }
 
 .lds-dual-ring:after {
