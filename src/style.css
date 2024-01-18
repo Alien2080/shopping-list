@@ -157,6 +157,13 @@ main {
 
 .strikthrough {
   text-decoration: line-through;
+  position: absolute;
+  content: '';
+  width: 100%;
+  /* height: 1px; */
+  background-color: var(--grey);
+  top: 50%; /* Position at the center of the item */
+  /* transform: translateY(-50%); */
 }
 
 .item {
@@ -165,6 +172,7 @@ main {
   padding: var(--spacing-md);
   border-bottom: 1px solid var(--listColour);
   cursor: pointer;
+  position: relative; /* Added position relative */
 }
 
 .item-name {
