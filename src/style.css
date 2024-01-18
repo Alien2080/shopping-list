@@ -137,9 +137,13 @@ input[type='submit'] {
 }
 
 /* MAIN */
-main {
+.main {
   margin-top: var(--spacing-lg);
   text-align: center;
+}
+
+#newListBtn {
+  margin-bottom: 35px;
 }
 
 .shopping-list {
@@ -263,7 +267,7 @@ input {
   padding: 10px;
   border-radius: var(--border-radius);
   display: inline-block;
-  background-color: var(--listColour);
+  background-color: var(--white);
   font-size: 16px;
 }
 
@@ -280,10 +284,12 @@ input {
 
 .input-category {
   flex: 1;
-  margin-right: 10px;
+  margin-right: 25px; 
   font-family: 'Arial', Helvetica, sans-serif;
   padding: 10px;
   font-size: 16px;
+  border-radius: 20px;
+  background-color: var(--listColour);
 }
 
 .checkbox {
