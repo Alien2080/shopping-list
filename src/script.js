@@ -3,7 +3,7 @@ class Item {
         name,
         amount = '1',
         category = 'aisles',
-        enteredBy = auth.user ? email : ''
+        // enteredBy = auth.user ? email : ''
     ) {
         this.name = name
         if (amount) {
@@ -18,7 +18,7 @@ class Item {
         else {
             this.category = 'aisles'
         }
-        this.enteredBy = enteredBy
+        // this.enteredBy = enteredBy
     }
 }
 
@@ -77,8 +77,12 @@ function createItem(item) {
     deleteIcon.addEventListener('click', (e) => {
         itemDiv.remove()
         list.removeItem(itemName.textContent)
-        saveLocal()
-        removeItemFromDB(itemName.textContent)
+        if (auth.currentUser) {
+            removeItemFromDB(itemName.textContent)
+        } else {
+            saveLocal()
+        }
+               
     })
 
     itemDiv.classList.add('item')
@@ -137,14 +141,20 @@ function addItem() {
     const name = document.getElementById('inputName')
     const amount = document.getElementById('inputAmount')
     const category = document.getElementById('inputCategory')
-    const newItem = new Item(name.value, amount.value, category.value, auth.currentUser.uid)
+    const newItem = new Item(name.value, amount.value, category.value)
 
     if (list.isOnList(newItem)) {
-        throw "Item already on list"
+        alert("Item already on list")
     }
     list.addItem(newItem)
-    saveItemToDB(newItem)
-    saveLocal()
+
+    if (auth.currentUser) {
+        saveItemToDB(newItem)
+    } else {
+        saveLocal()
+
+    }
+
     updateShoppingList()
 }
 
@@ -155,7 +165,7 @@ function resetShoppingList() {
 
 function clearList() {
     list = new ShoppingList()
-    removeListFromDB()
+    if (auth.currentUser) removeListFromDB()
     updateShoppingList()
 }
 
@@ -165,8 +175,6 @@ function createFormHtml() {
     const amount = document.createElement('input')
     const category = document.createElement('select')
     const submit = document.createElement('input')
-
-    
 
     form.id = 'inputForm'
 
@@ -190,7 +198,11 @@ function createFormHtml() {
         categoryOption.textContent = option.charAt(0).toUpperCase() + option.slice(1);
         category.appendChild(categoryOption);
     });
+    category.value = 'aisles';  // Set default value to 'aisles'
 
+    name.addEventListener('blur', submitForm)
+    amount.addEventListener('blur', submitForm)
+    category.addEventListener('blur', submitForm)
 
     submit.type = 'submit'
     submit.hidden = true
@@ -239,6 +251,10 @@ function closeAllModals() {
     closeAccountModal()
 }
 
+function submitForm() {
+    addItem()
+}
+
 function handleKeyboardInput(e) {
     if (e.key === 'Enter') addItem()
 }
@@ -267,7 +283,7 @@ function saveItemToDB(item) {
         name: item.name,
         amount: item.amount,
         category: item.category,
-        enteredBy: item.enteredBy,
+        // enteredBy: item.enteredBy,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
     })
 }
@@ -306,8 +322,8 @@ async function getItemsFromDB() {
     list.items = snapshot.docs.map((doc) => new Item(
         doc.data().name,
         doc.data().amount,
-        doc.data().category,
-        doc.data().enteredBy
+        doc.data().category
+        // doc.data().enteredBy
     ))
 
     updateShoppingList()
@@ -333,8 +349,8 @@ function setupRealTimeListener() {
             list.items = snapshot.docs.map((doc) => new Item(
                 doc.data().name,
                 doc.data().amount,
-                doc.data().category,
-                doc.data().enteredBy
+                doc.data().category
+                // doc.data().enteredBy
             ))
             updateShoppingList()
         })
@@ -379,7 +395,8 @@ auth.onAuthStateChanged(async (user) => {
         setupRealTimeListener()
     } else {
         if (unsubscribe) unsubscribe()
-
+        restoreLocal()
+        updateShoppingList()
     }
     setupAccountModal(user)
     setupNavbar(user)
