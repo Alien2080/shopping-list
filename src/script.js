@@ -118,6 +118,13 @@ function createItem(item) {
             break
     }
 
+    const editIcon = document.createElement('span');
+    editIcon.classList.add('material-icons');
+    editIcon.textContent = 'edit';
+    editIcon.addEventListener('click', () => {
+        editItem(item);
+    });
+
     itemDiv.addEventListener("click", () => {
         itemDiv.classList.toggle('strikthrough')
     })
@@ -125,7 +132,9 @@ function createItem(item) {
     itemDiv.appendChild(itemName)
     itemDiv.appendChild(itemAmount)
     itemDiv.appendChild(itemCategory)
+    itemDiv.appendChild(editIcon);
     itemDiv.appendChild(deleteIcon)
+
     shoppingListDiv.insertBefore(itemDiv, document.getElementById('inputForm'))
 }
 
@@ -155,6 +164,56 @@ function addItem() {
     }
 
     updateShoppingList()
+}
+
+function editItem(item) {
+    const editForm = document.createElement('form');
+    const newCategory = document.createElement('select');
+    const submitButton = document.createElement('button');
+
+    newCategory.id = 'editCategory';
+    newCategory.classList.add('input-category');
+
+    const categoryOptions = ['fruit', 'meat', 'deli', 'aisles', 'dairy', 'baby', 'freezer'];
+    categoryOptions.forEach((option) => {
+        const categoryOption = document.createElement('option');
+        categoryOption.value = option;
+        categoryOption.textContent = option.charAt(0).toUpperCase() + option.slice(1);
+        newCategory.appendChild(categoryOption);
+    });
+
+    submitButton.type = 'button';
+    submitButton.textContent = 'Update';
+    submitButton.addEventListener('click', () => {
+        updateCategory(item, newCategory.value);
+        editForm.remove();
+    });
+
+    editForm.appendChild(newCategory);
+    editForm.appendChild(submitButton);
+
+    const overlay = document.createElement('div');
+    overlay.classList.add('overlay');
+    overlay.addEventListener('click', () => {
+        editForm.remove();
+        overlay.remove();
+    });
+
+    document.body.appendChild(overlay);
+    document.body.appendChild(editForm);
+}
+
+function updateCategory(item, newCategory) {
+    // const thing = item
+    item.category = newCategory;
+
+    if (auth.currentUser) {
+        updateItemInDB(item);
+    } else {
+        saveLocal()
+    }
+
+    updateShoppingList();
 }
 
 function resetShoppingList() {
@@ -314,24 +373,39 @@ async function getItemIDFromName(name) {
         .where('name', '==', name)
         .where('ownerID', '==', auth.currentUser.uid)
         .get()
+
     if (snapshot.docs.length > 1) {
         throw "more than 1 item with name in collection"
     }
-    const itemID = snapshot.docs.map((doc) => doc.id).join('')
-    return itemID
+
+    return snapshot.docs[0].id;
 }
 
-async function getItemsFromDB() {
-    let snapshot = await db.collection('shopping-list').get()
+// async function getItemsFromDB() {
+//     let snapshot = await db.collection('shopping-list').get()
 
-    list.items = snapshot.docs.map((doc) => new Item(
-        doc.data().name,
-        doc.data().amount,
-        doc.data().category
-        // doc.data().enteredBy
-    ))
+//     list.items = snapshot.docs.map((doc) => new Item(
+//         doc.data().name,
+//         doc.data().amount,
+//         doc.data().category
+//         // doc.data().enteredBy
+//     ))
 
-    updateShoppingList()
+//     updateShoppingList()
+// }
+
+async function updateItemInDB(item) {
+    const itemRef = db.collection('shopping-list').doc(await getItemIDFromName(item.name));
+    
+    itemRef.update({
+        category: item.category,
+    })
+    .then(() => {
+        console.log('Item updated in Firestore');
+    })
+    .catch((error) => {
+        console.error('Error updating item in Firestore: ', error);
+    });
 }
 
 function signIn() {
