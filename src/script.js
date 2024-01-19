@@ -152,7 +152,6 @@ function addItem() {
         saveItemToDB(newItem)
     } else {
         saveLocal()
-
     }
 
     updateShoppingList()
@@ -200,6 +199,7 @@ function createFormHtml() {
     });
     category.value = 'aisles';  // Set default value to 'aisles'
 
+    // form.addEventListener('blur', submitForm)
     name.addEventListener('blur', submitForm)
     amount.addEventListener('blur', submitForm)
     category.addEventListener('blur', submitForm)
@@ -252,7 +252,12 @@ function closeAllModals() {
 }
 
 function submitForm() {
-    addItem()
+    const name = document.getElementById('inputName')
+    const amount = document.getElementById('inputAmount')
+    if (name.value != '' && amount.value != '')
+    {
+        addItem()
+    }   
 }
 
 function handleKeyboardInput(e) {
@@ -329,8 +334,6 @@ async function getItemsFromDB() {
     updateShoppingList()
 }
 
-
-
 function signIn() {
     const provider = new firebase.auth.GoogleAuthProvider()
     auth.signInWithPopup(provider)
@@ -388,7 +391,6 @@ accountBtn.onclick = openAccountModal
 window.onkeydown = handleKeyboardInput
 logInBtn.onclick = signIn
 logOutBtn.onclick = signOut
-
 
 auth.onAuthStateChanged(async (user) => {
     if (user) {
