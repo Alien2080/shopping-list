@@ -35,6 +35,25 @@
     <div class="modal" id="accountModal"></div>
     <div class="overlay" id="overlay"></div>
 
+    <script>
+        let counter = 0; // Initialize a counter variable
+
+        function updateGradient() {
+            counter += 1; // Increment the counter
+            const timeMultiplier = 0.2; // Adjust this value to control the speed of the angle change
+
+            let angle = (counter * timeMultiplier) % 1000 / 1000 * 360;
+
+            // Ensure the angle stays within the 0 to 360 range
+            angle = (angle + 360) % 360;
+            document.body.style.background = `linear-gradient(${angle}deg in hsl, blue, red 80%, blue 80%, red)`
+
+            requestAnimationFrame(updateGradient);
+        }
+    
+        updateGradient(); // Start the animation
+      </script>
+
     <!-- Firebase Cloud Firestore -->
     <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
